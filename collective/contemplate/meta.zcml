@@ -1,0 +1,15 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:meta="http://namespaces.zope.org/meta">
+
+  <meta:directives namespace="http://namespaces.zope.org/contemplate">
+      
+    <meta:directive
+       name="formControllerPage"
+       schema=".meta.IFormControllerPageDirective"
+       handler=".meta.formControllerPage"
+       />
+
+  </meta:directives>
+
+</configure>

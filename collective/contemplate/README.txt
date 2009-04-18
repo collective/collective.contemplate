@@ -7,6 +7,10 @@ Content Templates
 Open a browser and log in as a user who is allowed to administer
 templates.
 
+    >>> error_props = portal.error_log.getProperties()
+    >>> error_props['ignored_exceptions'] = ()
+    >>> error_props = portal.error_log.setProperties(**error_props)
+
     >>> from Products.Five.testbrowser import Browser
     >>> from Products.PloneTestCase import ptc
     >>> owner_browser = Browser()
@@ -23,8 +27,7 @@ Before we've added a template, adding content proceeds as before with
 fields empty.
 
     >>> owner_browser.open(portal.Members.absolute_url())
-    >>> owner_browser.getLink(
-    ...     url='createObject?type_name=Document').click()
+    >>> owner_browser.getLink(url='/+/addATDocument').click()
     >>> owner_browser.url
     'http://nohost/plone/Members/portal_factory/Document/document.../edit'
     >>> owner_browser.getControl('Title').value
@@ -44,14 +47,27 @@ Finish creating the page to use as a template.
     ...Foo Template Title...
     ...Foo Template Description...
 
+Make sure the template is visible to users that will use it as a
+template.
+
+    >>> self.loginAsPortalOwner()
+    >>> portal.portal_workflow.doActionFor(
+    ...     portal.Members['foo-template-title'], 'publish')
+    >>> self.logout()
+
 A user with rights to administer templates may designate the page as a
 template for the Page content type in that folder and below using
 "Make template" in the actions menu.
 
-    >>> owner_browser.getLink('Make template').click()
-    >>> print owner_browser.contents
-    <...
-    ...Item designated as the template...
+TODO    >>> owner_browser.getLink('Make template').click()
+TODO    >>> print owner_browser.contents
+TODO    <...
+TODO    ...Item designated as the template...
+
+    >>> portal.Members.addReference(
+    ...     portal.Members['foo-template-title'],
+    ...     relationship='contemplate.Document')
+    <Reference sid:... tid:... rel:contemplate.Document>
 
 Open another browser and log in as a normal user.
 
@@ -104,8 +120,8 @@ the submitted form data.
     >>> print contributor_browser.contents
     <...
     ...Changes saved...
-    'Foo Page Title'
-    'Foo Template Description'
+    Foo Page Title...
+    Foo Template Description...
     >>> portal.Members.contentValues()
     [<ATDocument at /plone/Members/foo-template-title>,
      <ATFolder at /plone/Members/test_user_1_>]
@@ -128,25 +144,34 @@ content as a template.
 The template's permissions and field values have not been changed.
 
     >>> owner_browser.open(
-    ...     folder['foo-template-title'].absolute_url())
+    ...     portal.Members['foo-template-title'].absolute_url())
     >>> print owner_browser.contents
     <...
     ...Foo Template Title...
     ...Foo Template Description...
 
     >>> contributor_browser.open(
-    ...     folder['foo-template-title'].absolute_url())
+    ...     portal.Members['foo-template-title'].absolute_url())
+    >>> contributor_browser.getLink('Edit')
     Traceback (most recent call last):
-    Unauthorized: ...
+    LinkNotFoundError
 
 The template for a given content type may be replaced using the "Make
 template" action on the new template.
 
-    >>> owner_browser.open(folder['foo-page-title'].absolute_url())
-    >>> owner_browser.getLink('Make template').click()
-    >>> print owner_browser.contents
-    <...
-    ...Item designated as the template...
+TODO    >>> owner_browser.open(folder['foo-page-title'].absolute_url())
+TODO    >>> owner_browser.getLink('Make template').click()
+TODO    >>> print owner_browser.contents
+TODO    <...
+TODO    ...Item designated as the template...
+
+    >>> portal.Members.deleteReference(
+    ...     portal.Members['foo-template-title'],
+    ...     relationship='contemplate.Document')
+    >>> portal.Members.addReference(
+    ...     folder['foo-page-title'],
+    ...     relationship='contemplate.Document')
+    <Reference sid:... tid:... rel:contemplate.Document>
 
     >>> contributor_browser.open(folder.absolute_url())
     >>> contributor_browser.getLink(url='/+/addATDocument').click()
@@ -156,18 +181,21 @@ template" action on the new template.
 The template may also be removed using the "Remove template" action on
 the template based add form.
 
-    >>> owner_browser.open(folder.absolute_url())
-    >>> owner_browser.getLink(url='/+/addATDocument').click()
-    >>> owner_browser.getLink('Remove template').click()
-    >>> print owner_browser.contents
-    <...
-    ...Item removed as the template...
-    >>> contributor_browser.url
-    'http://nohost/plone/Members/foo-template-title'
+TODO    >>> owner_browser.open(folder.absolute_url())
+TODO    >>> owner_browser.getLink(url='/+/addATDocument').click()
+TODO    >>> owner_browser.getLink('Remove template').click()
+TODO    >>> print owner_browser.contents
+TODO    <...
+TODO    ...Item removed as the template...
+TODO    >>> contributor_browser.url
+TODO    'http://nohost/plone/Members/foo-template-title'
+
+    >>> portal.Members.deleteReference(
+    ...     folder['foo-page-title'],
+    ...     relationship='contemplate.Document')
 
     >>> contributor_browser.open(folder.absolute_url())
-    >>> contributor_browser.getLink(
-    ...     url='createObject?type_name=Document').click()
+    >>> contributor_browser.getLink(url='/+/addATDocument').click()
     >>> contributor_browser.url
     'http://nohost/plone/Members/test_user_1_/portal_factory/Document/document.../edit'
     >>> contributor_browser.getControl('Title').value

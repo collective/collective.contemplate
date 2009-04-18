@@ -1,0 +1,5 @@
+<tal:body
+   define="body_macro context/contemplate_macros/macros/body;
+           form nocall:view;">
+  <metal:master use-macro="context/base_edit/macros/master" />
+</tal:body>
