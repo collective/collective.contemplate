@@ -1,29 +1,8 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
-   xmlns:browser="http://namespaces.zope.org/browser"
-   xmlns:contemplate="http://namespaces.zope.org/contemplate"
    i18n_domain="collective.contemplate">
 
-  <adapter factory=".at.getTemplate" />
-
-  <permission
-    id="atct.AddDocument"
-    title="ATContentTypes: Add Document"
-    />
-
-  <browser:page
-     name="contemplate_macros"
-     for="Products.Archetypes.interfaces.IBaseObject"
-     template="macros.pt"
-     permission="cmf.ModifyPortalContent" />
-
-  <include file="meta.zcml" />
-
-  <contemplate:formControllerPage
-     name="addATDocument"
-     type_name="Document"
-     for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
-     permission="atct.AddDocument" />
+  <include file="base.zcml" />
+  <include file="atct.zcml" />
 
 </configure>

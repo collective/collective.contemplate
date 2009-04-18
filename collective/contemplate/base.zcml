@@ -1,0 +1,13 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:browser="http://namespaces.zope.org/browser">
+
+  <adapter factory=".at.getTemplate" />
+
+  <browser:page
+     name="contemplate_macros"
+     for="Products.Archetypes.interfaces.IBaseObject"
+     template="macros.pt"
+     permission="cmf.ModifyPortalContent" />
+
+</configure>
