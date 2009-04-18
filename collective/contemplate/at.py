@@ -27,6 +27,7 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
 
     def __call__(self):
         if self.template is None:
+            # Fallback to the normal createObject script
             return mapply.mapply(
                 self.context.context.restrictedTraverse(
                     'createObject'),
@@ -36,12 +37,16 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
 
         savepoint = transaction.savepoint(True)
         try:
+            # Temporarily Make the current user the owner
             self.changeOwnership(self.context)
+            # Lookup the form controller object at the template's edit
+            # action and use it to process the form
             edit_action = self.getEdit(self.context)
             edit = self.context.restrictedTraverse(edit_action)
             controller = self.context.portal_form_controller
             controller_state = controller.getState(edit, is_validator=0)
             if 'form.submitted' in self.request:
+                # Run the form controller validation
                 controller_state = edit.getButton(
                     controller_state, self.request)
                 validators = edit.getValidators(
@@ -49,13 +54,28 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
                 controller_state = controller.validate(
                     controller_state, self.request, validators)
                 if controller_state.getErrors():
+                    # If there are errors then render this version of
+                    # the form
                     return self.index(state=controller_state)
             else:
+                # Form has not been submitted yet so simply render
+                # this version of the form
                 return self.index(state=controller_state)
         finally:
+            # Undo the temporary change of ownership
             savepoint.rollback()
 
-        added = self.create()
+        # The form has been successully submitted, copy the template
+        # and pass processing off to the real edit action
+        added = self.createAndAdd()
+        controller_state.setContext(added)
+        return added.restrictedTraverse(edit_action)()
+
+    def createAndAdd(self, *args, **kw):
+        """Rename the object if the id widget is not visible to avoid
+        'copy_of' ids"""
+        added = super(FormControllerTemplateAddForm,
+                      self).createAndAdd(*args, **kw)
         if 'title' in self.request:
             added.setTitle(self.request['title'])
             added._renameAfterCreation()
@@ -68,9 +88,8 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
                 widget, 'ignore_visible_ids', None)
             if not (widget_visible_ids or member_visible_ids):
                 self.request.form.pop('id', None)
-        controller_state.setContext(added)
-        return added.restrictedTraverse(edit_action)()
-
+        return added
+        
     def getEdit(self, context):
         # From Products.CMFFormController.Actions.TraverseToAction
         action = 'edit'

@@ -1,5 +1,6 @@
 from zope import interface
 from zope import component
+from zope import event
 from zope.app.component import hooks
 
 import Acquisition
@@ -16,15 +17,19 @@ class TemplateAddForm(object):
         if self.template is not None:
             self.context, self.container = self.template
 
-    def create(self, *args, **kw):
+    def createAndAdd(self, *args, **kw):
         if self.template is None:
-            return super(TemplateAddForm, self).create(*args, **kw)
+            return super(
+                TemplateAddForm, self).createAndAdd(*args, **kw)
         result, = self.adding.context.manage_pasteObjects(
             self.container.manage_copyObjects(
                 [self.context.getId()]))
+        # Acquisition workaround
         self.__dict__['context'] = added = self.adding.context[
             result['new_id']]
         self.changeOwnership(added)
+        event.notify(
+            interfaces.TemplateCopiedEvent(added, self.context))
         return added
 
     def nextURL(self):
