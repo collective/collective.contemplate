@@ -5,6 +5,7 @@ from zope import interface
 from zope import component
 from ZPublisher import Publish
 from ZPublisher import mapply
+from Products.Five.browser import pagetemplatefile
 
 from Products.Archetypes import interfaces as at_ifaces
 
@@ -24,6 +25,8 @@ def getTemplate(container, form):
     return refs[0]
 
 class FormControllerTemplateAddForm(form.TemplateAddForm):
+
+    index = pagetemplatefile.ZopeTwoPageTemplateFile('at.pt')
 
     def __call__(self):
         if self.template is None:

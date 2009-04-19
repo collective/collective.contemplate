@@ -49,61 +49,51 @@
      name="addATDocument"
      type_name="Document"
      for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
      permission="atct.AddDocument" />
   <contemplate:formControllerPage
      name="addATEvent"
      type_name="Event"
      for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
      permission="atct.AddEvent" />
   <contemplate:formControllerPage
      name="addATFavorite"
      type_name="Favorite"
      for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
      permission="atct.AddFavorite" />
   <contemplate:formControllerPage
      name="addATFile"
      type_name="File"
      for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
      permission="atct.AddFile" />
   <contemplate:formControllerPage
      name="addATFolder"
      type_name="Folder"
      for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
      permission="atct.AddFolder" />
   <contemplate:formControllerPage
      name="addATImage"
      type_name="Image"
      for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
      permission="atct.AddImage" />
   <contemplate:formControllerPage
      name="addATBTreeFolder"
      type_name="Large Plone Folder"
      for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
      permission="atct.AddLargePloneFolder" />
   <contemplate:formControllerPage
      name="addATLink"
      type_name="Link"
      for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
      permission="atct.AddLink" />
   <contemplate:formControllerPage
      name="addATNewsItem"
      type_name="News Item"
      for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
      permission="atct.AddNewsItem" />
   <contemplate:formControllerPage
      name="addATTopic"
      type_name="Topic"
      for="zope.app.container.interfaces.IAdding"
-     template="at.pt"
      permission="atct.AddTopic" />
   
 </configure>
