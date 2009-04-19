@@ -51,5 +51,6 @@ class TemplateAddForm(object):
     def changeOwnership(self, object):
         membership = object.portal_membership
         user_id = membership.getAuthenticatedMember().getId()
-        object.plone_utils.changeOwnershipOf(object, user_id)
+        object.plone_utils.changeOwnershipOf(
+            object, user_id, recursive=1)
         object.setCreators((user_id,))
