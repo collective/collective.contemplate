@@ -21,11 +21,12 @@ class TemplateAddForm(object):
         if self.template is None:
             return super(
                 TemplateAddForm, self).createAndAdd(*args, **kw)
-        result, = self.adding.context.manage_pasteObjects(
-            self.container.manage_copyObjects(
-                [self.context.getId()]))
+        destination = Acquisition.aq_inner(self.adding.context)
+        source = Acquisition.aq_inner(self.container)
+        result, = destination.manage_pasteObjects(
+            source.manage_copyObjects([self.context.getId()]))
         # Acquisition workaround
-        self.__dict__['context'] = added = self.adding.context[
+        self.__dict__['context'] = added = destination[
             result['new_id']]
         self.changeOwnership(added)
         event.notify(
