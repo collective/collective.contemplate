@@ -16,8 +16,9 @@ from collective.contemplate import form
 @component.adapter(
     at_ifaces.IReferenceable, interfaces.ITemplateForm)
 def getTemplate(container, form):
-    refs = container.getRefs(
+    refs = [ref for ref in container.getRefs(
         relationship='contemplate.%s' % form.type_name)
+            if ref is not None]
     if len(refs) == 0:
         return
     assert len(refs) == 1, (
