@@ -14,15 +14,16 @@ from collective.contemplate import form
 
 @interface.implementer(interfaces.ITemplate)
 @component.adapter(
-    at_ifaces.IReferenceable, interfaces.ITemplateForm)
-def getTemplate(container, form):
+    at_ifaces.IReferenceable, interfaces.ITemplateTypeInfo)
+def getTemplate(container, type_info):
     refs = [ref for ref in container.getRefs(
-        relationship='contemplate.%s' % form.type_name)
+        relationship='contemplate.%s' % type_info.getId())
             if ref is not None]
     if len(refs) == 0:
         return
     assert len(refs) == 1, (
-        'More than one template found for %s: %r' % (form.name, refs))
+        'More than one template found for %s: %r' % (
+            type_info.getId(), refs))
     return refs[0]
 
 class FormControllerTemplateAddForm(form.TemplateAddForm):
@@ -71,15 +72,15 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
 
         # The form has been successully submitted, copy the template
         # and pass processing off to the real edit action
-        added = self.createAndAdd()
+        added = self.createAndAdd(data=dict(id=self.context.getId()))
         controller_state.setContext(added)
         return added.restrictedTraverse(edit_action)()
 
-    def createAndAdd(self, *args, **kw):
+    def createAndAdd(self, data):
         """Rename the object if the id widget is not visible to avoid
         'copy_of' ids"""
         added = super(FormControllerTemplateAddForm,
-                      self).createAndAdd(*args, **kw)
+                      self).createAndAdd(data)
         if 'title' in self.request:
             added.setTitle(self.request['title'])
             added._renameAfterCreation()

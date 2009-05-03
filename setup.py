@@ -3,6 +3,8 @@ import os
 
 version = '0.1'
 
+tests_require = ['collective.testcaselayer']
+
 setup(name='collective.contemplate',
       version=version,
       description="Add content from existing content templates",
@@ -26,6 +28,8 @@ setup(name='collective.contemplate',
           'setuptools',
           # -*- Extra requirements: -*-
       ],
+      tests_require=tests_require,
+      extras_require={'tests': tests_require},
       entry_points="""
       # -*- Entry points: -*-
       """,

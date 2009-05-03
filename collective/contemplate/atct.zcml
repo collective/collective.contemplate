@@ -1,5 +1,7 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
+   xmlns:five="http://namespaces.zope.org/five"
+   xmlns:genericsetup="http://namespaces.zope.org/genericsetup"
    xmlns:contemplate="http://namespaces.zope.org/contemplate">
 
   <include file="meta.zcml" />
@@ -43,6 +45,14 @@
   <permission
      id="atct.AddTopic"
      title="ATContentTypes: Add Topic"
+     />
+
+  <five:registerClass
+     class=".dynamic.TemplateDynamicViewTypeInfo"
+     meta_type="TemplateDynamicViewTypeInfo"
+     addview="addDVFactoryTypeInformation.html"
+     permission="cmf.ManagePortal"
+     global="False"
      />
 
   <contemplate:formControllerPage
@@ -95,5 +105,19 @@
      type_name="Topic"
      for="zope.app.container.interfaces.IAdding"
      permission="atct.AddTopic" />
+
+  <genericsetup:registerProfile
+     name="default"
+     title="Content Templates"
+     description="Install support for content templates."
+     provides="Products.GenericSetup.interfaces.EXTENSION"
+     />
+
+  <genericsetup:registerProfile
+     name="clear"
+     title="collective.contemplate: Clear ATCT Types"
+     description="collective.contemplate: Clear ATCT Types"
+     provides="Products.GenericSetup.interfaces.EXTENSION"
+     />
   
 </configure>

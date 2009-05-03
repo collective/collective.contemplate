@@ -1,6 +1,23 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
-   xmlns:browser="http://namespaces.zope.org/browser">
+   xmlns:browser="http://namespaces.zope.org/browser"
+   xmlns:five="http://namespaces.zope.org/five">
+
+  <five:registerClass
+     class=".typeinfo.TemplateFactoryTypeInfo"
+     meta_type="TemplateFactoryTypeInfo"
+     addview="addFactoryTypeInformation.html"
+     permission="cmf.ManagePortal"
+     global="False"
+     />
+
+  <five:registerClass
+     class=".typeinfo.TemplateScriptableTypeInfo"
+     meta_type="TemplateScriptableTypeInfo"
+     addview="addScriptableTypeInformation.html"
+     permission="cmf.ManagePortal"
+     global="False"
+     />
 
   <adapter factory=".at.getTemplate" />
 

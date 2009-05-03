@@ -4,8 +4,8 @@ from zope.component import interfaces
 class ITemplate(interface.Interface):
     """A content template"""
 
-class ITemplateForm(interface.Interface):
-    """A content template"""
+class ITemplateTypeInfo(interface.Interface):
+    """Content template type information"""
 
     name = interface.Attribute('Name')
 
