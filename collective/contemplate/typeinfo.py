@@ -92,7 +92,7 @@ class TemplateTypeInfo(object):
 
     def isConstructionAllowed(self, container):
         """Not allowed if reserved id is already occupied"""
-        if self.reserved_id in container.contentIds():
+        if self.reserved_id and container.hasObject(self.reserved_id):
             return False
         return super(
             TemplateTypeInfo, self).isConstructionAllowed(container)
