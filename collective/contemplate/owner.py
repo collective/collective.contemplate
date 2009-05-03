@@ -16,7 +16,7 @@ def changeOwnershipOf(object):
     fixOwnerRole(object, userid)
 
     _path = object.portal_url.getRelativeContentURL(object)
-    for brain in object.portal_catalog(
+    for brain in object.portal_catalog.unrestrictedSearchResults(
         path={'query':_path,'level':1}):
         obj = brain.getObject()
         fixOwnerRole(obj, userid)
