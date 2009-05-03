@@ -202,3 +202,30 @@ TODO    'http://nohost/plone/Members/foo-template-title'
     ''
     >>> contributor_browser.getControl('Description').value
     ''
+
+Reserved IDs
+============
+
+A reserved_id property can be set on a type information.  If set and
+an object with that ID already exists, then the type is not allowed to
+be added.
+
+    >>> self.login()
+    >>> folder.allowedContentTypes()
+    [<TemplateDynamicViewTypeInfo at /plone/portal_types/Document>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Event>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Favorite>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/File>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Folder>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Image>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Link>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/News Item>]
+    >>> portal.portal_types.Document.reserved_id = 'foo-page-title'
+    >>> folder.allowedContentTypes()
+    [<TemplateDynamicViewTypeInfo at /plone/portal_types/Event>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Favorite>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/File>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Folder>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Image>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Link>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/News Item>]

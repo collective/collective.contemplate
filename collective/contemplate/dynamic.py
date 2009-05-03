@@ -8,5 +8,7 @@ class TemplateDynamicViewTypeInfo(typeinfo.TemplateTypeInfo,
                                   fti.DynamicViewTypeInformation):
 
     meta_type = 'TemplateDynamicViewTypeInfo'
+    _properties = (fti.DynamicViewTypeInformation._properties +
+                   typeinfo.TemplateTypeInfo._properties)
 
 Globals.InitializeClass(TemplateDynamicViewTypeInfo)
