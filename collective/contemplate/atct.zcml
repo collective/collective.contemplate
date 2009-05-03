@@ -47,6 +47,8 @@
      title="ATContentTypes: Add Topic"
      />
 
+  <subscriber handler=".login.createMemberArea" />
+
   <five:registerClass
      class=".dynamic.TemplateDynamicViewTypeInfo"
      meta_type="TemplateDynamicViewTypeInfo"
