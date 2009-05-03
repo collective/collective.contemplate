@@ -11,6 +11,7 @@ from Products.Archetypes import interfaces as at_ifaces
 
 from collective.contemplate import interfaces
 from collective.contemplate import form
+from collective.contemplate import owner
 
 @interface.implementer(interfaces.ITemplate)
 @component.adapter(
@@ -43,7 +44,7 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
         savepoint = transaction.savepoint(True)
         try:
             # Temporarily Make the current user the owner
-            self.changeOwnership(self.context)
+            owner.changeOwnershipOf(self.context)
             # Lookup the form controller object at the template's edit
             # action and use it to process the form
             edit_action = self.getEdit(self.context)
@@ -72,7 +73,7 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
 
         # The form has been successully submitted, copy the template
         # and pass processing off to the real edit action
-        added = self.createAndAdd(data=dict(id=self.context.getId()))
+        added = self.createAndAdd(data=dict())
         controller_state.setContext(added)
         return added.restrictedTraverse(edit_action)()
 
