@@ -11,6 +11,7 @@ from collective.contemplate import interfaces
 from collective.contemplate import owner
 
 class TemplateTypeInfo(object):
+    """Template Type Information"""
     interface.implements(interfaces.ITemplateTypeInfo)
 
     meta_type = 'TemplateTypeInfo'
@@ -63,6 +64,7 @@ class TemplateTypeInfo(object):
 
 class TemplateTypeInformation(TemplateTypeInfo,
                               TypesTool.TypeInformation):
+    """Template Type Information"""
 
     meta_type = 'TemplateTypeInformation'
     _properties = (TypesTool.TypeInformation._properties +
@@ -72,6 +74,7 @@ Globals.InitializeClass(TemplateTypeInformation)
 
 class TemplateFactoryTypeInfo(TemplateTypeInfo,
                               TypesTool.FactoryTypeInformation):
+    """Template Factory Type Information"""
 
     meta_type = 'TemplateFactoryTypeInfo'
     _properties = (TypesTool.FactoryTypeInformation._properties +
@@ -81,6 +84,7 @@ Globals.InitializeClass(TemplateFactoryTypeInfo)
 
 class TemplateScriptableTypeInfo(TemplateTypeInfo,
                                  TypesTool.ScriptableTypeInformation):
+    """Template Scriptable Type Information"""
 
     meta_type = 'TemplateScriptableTypeInfo'
     _properties = (TypesTool.ScriptableTypeInformation._properties +
