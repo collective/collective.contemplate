@@ -3,6 +3,8 @@ from urlparse import urlsplit
 import transaction
 from zope import interface
 from zope import component
+
+import Acquisition
 from ZPublisher import Publish
 from ZPublisher import mapply
 from Products.Five.browser import pagetemplatefile
@@ -35,7 +37,8 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
         if self.template is None:
             # Fallback to the normal createObject script
             return mapply.mapply(
-                self.context.context.restrictedTraverse(
+                Acquisition.aq_inner(
+                    self.context.context).restrictedTraverse(
                     'createObject'),
                 self.request.args, dict(type_name=self.type_name),
                 Publish.call_object, 1, Publish.missing_name,
@@ -43,13 +46,14 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
 
         savepoint = transaction.savepoint(True)
         try:
+            context = Acquisition.aq_inner(self.context)
             # Temporarily Make the current user the owner
-            owner.changeOwnershipOf(self.context)
+            owner.changeOwnershipOf(context)
             # Lookup the form controller object at the template's edit
             # action and use it to process the form
-            edit_action = self.getEdit(self.context)
-            edit = self.context.restrictedTraverse(edit_action)
-            controller = self.context.portal_form_controller
+            edit_action = self.getEdit(context)
+            edit = context.restrictedTraverse(edit_action)
+            controller = context.portal_form_controller
             controller_state = controller.getState(edit, is_validator=0)
             if 'form.submitted' in self.request:
                 # Run the form controller validation
