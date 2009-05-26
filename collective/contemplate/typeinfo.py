@@ -46,10 +46,15 @@ class TemplateTypeInfo(object):
     def getTemplate(self, container):
         site = container.portal_url.getPortalObject()
         parent = container
+        container_base = Acquisition.aq_base(container)
         while parent is not None:
             template = component.queryMultiAdapter(
                 (parent, self), interfaces.ITemplate)
-            if template is not None:
+            parent_base = Acquisition.aq_base(parent)
+            if template is not None and (
+                parent_base is container_base or not
+                interfaces.IContainerOnlyTemplate.providedBy(template)
+                ):
                 return template, parent
             if Acquisition.aq_base(parent) is site:
                 return

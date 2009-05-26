@@ -19,3 +19,6 @@ class TemplateCopiedEvent(interfaces.ObjectEvent):
     def __init__(self, object, template):
         super(TemplateCopiedEvent, self).__init__(object)
         self.template = template
+
+class IContainerOnlyTemplate(interface.Interface):
+    """Template only used for the assigned container"""
