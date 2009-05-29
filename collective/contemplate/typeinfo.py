@@ -22,12 +22,12 @@ class TemplateTypeInfo(object):
 
     reserved_id = None
 
-    def constructInstance(self, container, id=None, *args, **kw):
+    def _constructInstance(self, container, id=None, *args, **kw):
         """Copy a template if available"""
         template = self.getTemplate(container)
         if template is None:
             return super(
-                TemplateTypeInfo, self).constructInstance(
+                TemplateTypeInfo, self)._constructInstance(
                 container, id, *args, **kw)
         orig, source = template
         result, = container.manage_pasteObjects(
