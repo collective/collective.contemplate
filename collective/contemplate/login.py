@@ -18,9 +18,14 @@ def createMemberArea(logged_in):
     container = logged_in.principal.Members
     if container.hasObject(safe_member_id):
         return
+    createObjectAsPortalOwner(
+        container, 
+        type_name=container.portal_membership.memberarea_type,
+        id_=safe_member_id)
 
-    info = logged_in.principal.portal_types.getTypeInfo(
-        logged_in.principal.portal_membership.memberarea_type)
+def createObjectAsPortalOwner(container, type_name, id_):
+    """Create an object as the portal owner"""
+    info = container.portal_types.getTypeInfo(type_name)
     template = info.getTemplate(container)
     if template is None:
         return
@@ -29,12 +34,14 @@ def createMemberArea(logged_in):
     sm = SecurityManagement.getSecurityManager()
     SecurityManagement.newSecurityManager(
         None,
-        logged_in.principal.portal_url.getPortalObject().getOwner())
+        container.portal_url.getPortalObject().getOwner())
     result, = container.manage_pasteObjects(
         source.manage_copyObjects([orig.getId()]))
-    container.manage_renameObject(result['new_id'], safe_member_id)
+    container.manage_renameObject(result['new_id'], id_)
     SecurityManagement.setSecurityManager(sm)
 
-    added = container[safe_member_id]
+    added = container[id_]
     owner.changeOwnershipOf(added)
     event.notify(interfaces.TemplateCopiedEvent(added, orig))
+
+    return added
