@@ -7,10 +7,6 @@ Content Templates
 Open a browser and log in as a user who is allowed to administer
 templates.
 
-    >>> error_props = portal.error_log.getProperties()
-    >>> error_props['ignored_exceptions'] = ()
-    >>> error_props = portal.error_log.setProperties(**error_props)
-
     >>> from Products.Five.testbrowser import Browser
     >>> from Products.PloneTestCase import ptc
     >>> owner_browser = Browser()
