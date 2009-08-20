@@ -1,0 +1,64 @@
+.. -*-doctest-*-
+
+===================
+Compatibility Tests
+===================
+
+Ensure that including the collective.contemplate code doesn't
+interfere with normal operations.
+
+Create a new user to test memberarea creation.
+
+    >>> from Products.PloneTestCase import ptc
+    >>> portal.portal_membership.addMember(
+    ...     'foo_member', ptc.default_password,
+    ...     ['Member', 'Editor', 'Contributor'], ())
+
+Open a browser and log in as a normal user.
+
+    >>> from Products.Five.testbrowser import Browser
+    >>> browser = Browser()
+    >>> browser.handleErrors = False
+    >>> browser.open(portal.absolute_url())
+    >>> browser.getLink('Log in').click()
+    >>> browser.getControl(
+    ...     'Login Name').value = 'foo_member'
+    >>> browser.getControl(
+    ...     'Password').value = ptc.default_password
+    >>> browser.getControl('Log in').click()
+
+The member can create a folder.
+
+    >>> browser.getLink('Folder').click()
+    >>> print browser.contents
+    <...
+    ...Folder...
+
+    >>> browser.getControl(
+    ...     'Title').value = 'Foo Folder Title'
+    >>> browser.getControl(
+    ...     'Description').value = 'Foo Folder Description'
+    >>> browser.getControl('Save').click()
+    >>> print browser.contents
+    <...
+    ...Changes saved...
+    ...Foo Folder Title...
+    ...Foo Folder Description...
+
+The member can create a page.
+
+    >>> browser.getLink('Page').click()
+    >>> print browser.contents
+    <...
+    ...Page...
+
+    >>> browser.getControl(
+    ...     'Title').value = 'Foo Page Title'
+    >>> browser.getControl(
+    ...     'Description').value = 'Foo Page Description'
+    >>> browser.getControl('Save').click()
+    >>> print browser.contents
+    <...
+    ...Changes saved...
+    ...Foo Page Title...
+    ...Foo Page Description...

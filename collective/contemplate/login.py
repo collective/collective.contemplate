@@ -25,7 +25,10 @@ def createMemberArea(logged_in):
 
 def createObjectAsPortalOwner(container, type_name, id_):
     """Create an object as the portal owner"""
-    info = container.portal_types.getTypeInfo(type_name)
+    info = interfaces.ITemplateTypeInfo(
+        container.portal_types.getTypeInfo(type_name), None)
+    if info is None:
+        return
     template = info.getTemplate(container)
     if template is None:
         return
