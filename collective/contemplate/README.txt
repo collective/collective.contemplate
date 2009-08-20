@@ -199,6 +199,36 @@ TODO    'http://nohost/plone/Members/foo-template-title'
     >>> contributor_browser.getControl('Description').value
     ''
 
+Global Templates
+================
+
+A template can be designated as the global template for a given portal
+type.  To do so set, the "Global Template UID" property of the type
+info in the portal_types tool to the UID of the template object.
+
+Create an event as the template.
+
+    >>> self.loginAsPortalOwner()
+    >>> foo_event = portal[portal.invokeFactory(
+    ...     type_name='Event', id='event-template-title',
+    ...     title='Event Template Title',
+    ...     description='Event template description')]
+
+Set the type info property to the UID for the event template.
+
+    >>> portal.portal_types.Event.manage_changeProperties(
+    ...     global_uid=foo_event.UID())
+
+Now when an event is added through the browser, it will be created
+from the template.
+
+    >>> contributor_browser.open(folder.absolute_url())
+    >>> contributor_browser.getLink(url='/+/addATEvent').click()
+    >>> contributor_browser.getControl('Title').value
+    'Event Template Title'
+    >>> contributor_browser.getControl('Description').value
+    'Event template description'
+
 Reserved IDs
 ============
 

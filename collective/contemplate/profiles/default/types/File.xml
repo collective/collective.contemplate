@@ -18,6 +18,7 @@
  <property name="view_methods">
   <element value="file_view"/>
  </property>
+ <property name="global_uid"></property>
  <alias from="(Default)" to="index_html"/>
  <alias from="edit" to="atct_edit"/>
  <alias from="sharing" to="@@sharing"/>

@@ -24,6 +24,7 @@
   <element value="atct_album_view"/>
   <element value="atct_topic_view"/>
  </property>
+ <property name="global_uid"></property>
  <alias from="(Default)" to="(dynamic view)"/>
  <alias from="edit" to="atct_edit"/>
  <alias from="sharing" to="@@sharing"/>

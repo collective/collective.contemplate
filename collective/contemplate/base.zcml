@@ -19,7 +19,8 @@
      global="False"
      />
 
-  <adapter factory=".at.getTemplate" />
+  <adapter factory=".at.getTemplateFromContainer" />
+  <adapter factory=".at.getTemplateFromTypeInfo" />
 
   <browser:page
      name="contemplate_macros"

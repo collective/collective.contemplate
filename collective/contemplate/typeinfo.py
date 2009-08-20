@@ -18,7 +18,9 @@ class TemplateTypeInfo(object):
 
     _properties = (
         {'id':'reserved_id', 'type': 'string', 'mode':'w',
-         'label':'Reserved ID'},)
+         'label':'Reserved ID'},
+        {'id':'global_uid', 'type': 'string', 'mode':'w',
+         'label':'Global Template UID'},)
 
     reserved_id = None
 
@@ -59,6 +61,7 @@ class TemplateTypeInfo(object):
             if Acquisition.aq_base(parent) is site:
                 return
             parent = Acquisition.aq_parent(parent)
+        return interfaces.ITemplate(self, None)        
 
     def isConstructionAllowed(self, container):
         """Not allowed if reserved id is already occupied"""

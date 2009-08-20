@@ -18,7 +18,7 @@ from collective.contemplate import owner
 @interface.implementer(interfaces.ITemplate)
 @component.adapter(
     at_ifaces.IReferenceable, interfaces.ITemplateTypeInfo)
-def getTemplate(container, type_info):
+def getTemplateFromContainer(container, type_info):
     refs = [ref for ref in container.getRefs(
         relationship='contemplate.%s' % type_info.getId())
             if ref is not None]
@@ -28,6 +28,13 @@ def getTemplate(container, type_info):
         'More than one template found for %s: %r' % (
             type_info.getId(), refs))
     return refs[0]
+
+@interface.implementer(interfaces.ITemplate)
+@component.adapter(interfaces.ITemplateTypeInfo)
+def getTemplateFromTypeInfo(type_info):
+    uid = type_info.getProperty('global_uid')
+    if uid:
+        return type_info.reference_catalog.lookupObject(uid)
 
 class FormControllerTemplateAddForm(form.TemplateAddForm):
 
