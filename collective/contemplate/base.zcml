@@ -19,6 +19,14 @@
      global="False"
      />
 
+  <five:registerClass
+     class=".dynamic.TemplateDynamicViewTypeInfo"
+     meta_type="TemplateDynamicViewTypeInfo"
+     addview="addDVFactoryTypeInformation.html"
+     permission="cmf.ManagePortal"
+     global="False"
+     />
+
   <adapter factory=".at.getTemplateFromContainer" />
   <adapter factory=".at.getTemplateFromTypeInfo" />
 

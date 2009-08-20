@@ -49,14 +49,6 @@
 
   <subscriber handler=".login.createMemberArea" />
 
-  <five:registerClass
-     class=".dynamic.TemplateDynamicViewTypeInfo"
-     meta_type="TemplateDynamicViewTypeInfo"
-     addview="addDVFactoryTypeInformation.html"
-     permission="cmf.ManagePortal"
-     global="False"
-     />
-
   <contemplate:formControllerPage
      name="addATDocument"
      type_name="Document"
