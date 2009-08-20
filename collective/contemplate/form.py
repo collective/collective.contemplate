@@ -17,7 +17,7 @@ class TemplateAddForm(object):
             self.template = info.getTemplate(
                 Acquisition.aq_inner(self.adding.context))
             if self.template is not None:
-                self.context, self.container = self.template
+                self.context = self.template
 
     def createAndAdd(self, data):
         """Delegate to the type info"""

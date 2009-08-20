@@ -29,9 +29,9 @@ class TemplateTypeInfo(object):
             return super(
                 TemplateTypeInfo, self)._constructInstance(
                 container, id, *args, **kw)
-        orig, source = template
+        source = Acquisition.aq_parent(Acquisition.aq_inner(template))
         result, = container.manage_pasteObjects(
-            source.manage_copyObjects([orig.getId()]))
+            source.manage_copyObjects([template.getId()]))
         if id:
             container.manage_renameObject(result['new_id'], id)
             added = container[id]
@@ -40,7 +40,7 @@ class TemplateTypeInfo(object):
             
         owner.changeOwnershipOf(added)
         event.notify(
-            interfaces.TemplateCopiedEvent(added, orig))
+            interfaces.TemplateCopiedEvent(added, template))
         return added
     
     def getTemplate(self, container):
@@ -55,7 +55,7 @@ class TemplateTypeInfo(object):
                 parent_base is container_base or not
                 interfaces.IContainerOnlyTemplate.providedBy(template)
                 ):
-                return template, parent
+                return template
             if Acquisition.aq_base(parent) is site:
                 return
             parent = Acquisition.aq_parent(parent)
