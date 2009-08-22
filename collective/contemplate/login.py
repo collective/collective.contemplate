@@ -1,6 +1,7 @@
 from zope import component
 from zope import event
 
+import Acquisition
 from AccessControl import SecurityManagement
 
 from Products.PluggableAuthService.interfaces import events
@@ -32,19 +33,19 @@ def createObjectAsPortalOwner(container, type_name, id_):
     template = info.getTemplate(container)
     if template is None:
         return
-    orig, source = template
-
+    source = Acquisition.aq_parent(Acquisition.aq_inner(template))
+        
     sm = SecurityManagement.getSecurityManager()
     SecurityManagement.newSecurityManager(
         None,
         container.portal_url.getPortalObject().getOwner())
     result, = container.manage_pasteObjects(
-        source.manage_copyObjects([orig.getId()]))
+        source.manage_copyObjects([template.getId()]))
     container.manage_renameObject(result['new_id'], id_)
     SecurityManagement.setSecurityManager(sm)
 
     added = container[id_]
     owner.changeOwnershipOf(added)
-    event.notify(interfaces.TemplateCopiedEvent(added, orig))
+    event.notify(interfaces.TemplateCopiedEvent(added, template))
 
     return added
