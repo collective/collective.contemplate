@@ -5,9 +5,30 @@ TODO
 
 * Add UI to folders for specifying context templates
 
+    >>> owner_browser.getLink('Make template').click()
+    >>> print owner_browser.contents
+    <...
+    ...Item designated as the template...
+
+    >>> owner_browser.open(folder['foo-page-title'].absolute_url())
+    >>> owner_browser.getLink('Make template').click()
+    >>> print owner_browser.contents
+    <...
+    ...Item designated as the template...
+
+    >>> owner_browser.open(folder.absolute_url())
+    >>> owner_browser.getLink(url='/+/addATDocument').click()
+    >>> owner_browser.getLink('Remove template').click()
+    >>> print owner_browser.contents
+    <...
+    ...Item removed as the template...
+    >>> contributor_browser.url
+    'http://nohost/plone/Members/foo-template-title'
+
 * Further avoid redundant indexing
 
   Implement manage_pasteObjects and manage_renameObject, such that no
   indexing is performed and leave indexing to the edit form handling.
 
-  This might cause problems with programmatic use.
+  This might cause problems with programmatic use.  Look at
+  experimental.contentcreation.

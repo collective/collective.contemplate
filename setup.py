@@ -8,8 +8,11 @@ tests_require = ['collective.testcaselayer']
 setup(name='collective.contemplate',
       version=version,
       description="Add content from existing content templates",
-      long_description=open("README.txt").read() + "\n" +
-                       open(os.path.join("docs", "HISTORY.txt")).read(),
+       long_description=open(os.path.join(
+          "src", "collective", "contemplate", "README.txt"
+          )).read() + "\n" + open(os.path.join(
+          "docs", "HISTORY.txt")).read() + "\n" + open(os.path.join(
+          "docs", "TODO.txt")).read(),
       # Get more strings from http://www.python.org/pypi?%3Aaction=list_classifiers
       classifiers=[
         "Programming Language :: Python",
@@ -20,7 +23,8 @@ setup(name='collective.contemplate',
       author_email='me@rpatterson.net',
       url='http://pypi.python.org/pypi/collective.contemplate',
       license='GPL',
-      packages=find_packages(exclude=['ez_setup']),
+      packages=find_packages('src', exclude=['ez_setup']),
+      package_dir = {'':'src'},
       namespace_packages=['collective'],
       include_package_data=True,
       zip_safe=False,
