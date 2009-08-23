@@ -1,0 +1,13 @@
+TODO
+====
+
+* Add UI to the types control for selecting a global template
+
+* Add UI to folders for specifying context templates
+
+* Further avoid redundant indexing
+
+  Implement manage_pasteObjects and manage_renameObject, such that no
+  indexing is performed and leave indexing to the edit form handling.
+
+  This might cause problems with programmatic use.
