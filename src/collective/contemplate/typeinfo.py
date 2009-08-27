@@ -41,6 +41,8 @@ class TemplateTypeInfo(object):
             added = container[result['new_id']]
             
         owner.changeOwnershipOf(added)
+        if args or kw:
+            added.edit(*args, **kw)
         event.notify(
             interfaces.TemplateCopiedEvent(added, template))
         return added

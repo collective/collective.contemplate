@@ -230,6 +230,21 @@ The template's permissions and field values have not been changed.
     Traceback (most recent call last):
     LinkNotFoundError
 
+The template is also used when an instance is created with
+invokeFactory or is otherwise created using a portal_types type
+information constructContent call.
+
+    >>> self.login()
+    >>> folder.invokeFactory(
+    ...     type_name='Document', id='bar-page-title',
+    ...     description='Bar page description')
+    'bar-page-title'
+    >>> self.logout()
+    >>> folder['bar-page-title'].Title()
+    'Foo Template Title'
+    >>> folder['bar-page-title'].Description()
+    'Bar page description'
+
 The template for a given content type may be replaced using the "Make
 template" action on the new template.
 
