@@ -56,6 +56,8 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
             context = Acquisition.aq_inner(self.context)
             # Temporarily Make the current user the owner
             owner.changeOwnershipOf(context)
+            # Temporarily mark the creation flag
+            context.markCreationFlag()
             # Lookup the form controller object at the template's edit
             # action and use it to process the form
             edit_action = self.getEdit(context)

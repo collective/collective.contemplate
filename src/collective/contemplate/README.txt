@@ -162,6 +162,9 @@ content type in that folder or below will use the template.
 
     >>> contributor_browser.open(folder.absolute_url())
     >>> contributor_browser.getLink(url='/+/addATFolder').click()
+    >>> print contributor_browser.contents
+    <...
+    ...Add <span> Folder...
     >>> contributor_browser.getControl('Title').value
     'Foo Template Title'
     >>> contributor_browser.getControl('Description').value
