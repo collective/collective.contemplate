@@ -106,15 +106,15 @@ Before we've added a template, adding content proceeds as before with
 fields empty.
 
     >>> owner_browser.open(portal.Members.absolute_url())
-    >>> owner_browser.getLink(url='/+/addATDocument').click()
+    >>> owner_browser.getLink(url='/+/addATFolder').click()
     >>> owner_browser.url
-    'http://nohost/plone/Members/portal_factory/Document/document.../edit'
+    'http://nohost/plone/Members/portal_factory/Folder/folder.../edit'
     >>> owner_browser.getControl('Title').value
     ''
     >>> owner_browser.getControl('Description').value
     ''
 
-Finish creating the page to use as a template.
+Finish creating the folder to use as a template.
 
     >>> owner_browser.getControl('Title').value = 'Foo Template Title'
     >>> owner_browser.getControl(
@@ -134,14 +134,14 @@ template.
     ...     portal.Members['foo-template-title'], 'publish')
     >>> self.logout()
 
-A user with rights to administer templates may designate the page as a
-template for the Page content type in that folder and below using
+A user with rights to administer templates may designate the folder as a
+template for the Folder content type in that folder and below using
 "Make template" in the actions menu.
 
     >>> portal.Members.addReference(
     ...     portal.Members['foo-template-title'],
-    ...     relationship='contemplate.Document')
-    <Reference sid:... tid:... rel:contemplate.Document>
+    ...     relationship='contemplate.Folder')
+    <Reference sid:... tid:... rel:contemplate.Folder>
 
 Open another browser and log in as a normal user.
 
@@ -161,13 +161,13 @@ Once a template has been designated, adding an item of the same
 content type in that folder or below will use the template.
 
     >>> contributor_browser.open(folder.absolute_url())
-    >>> contributor_browser.getLink(url='/+/addATDocument').click()
+    >>> contributor_browser.getLink(url='/+/addATFolder').click()
     >>> contributor_browser.getControl('Title').value
     'Foo Template Title'
     >>> contributor_browser.getControl('Description').value
     'Foo Template Description'
 
-The edit page will be rendered and validated against the template
+The edit form will be rendered and validated against the template
 without copying or otherwise instantiating new content.
 
     >>> contributor_browser.getControl('Title').value = ''
@@ -177,9 +177,9 @@ without copying or otherwise instantiating new content.
     ...Please correct the indicated errors...
     ...Title is required...
     >>> contributor_browser.url
-    'http://nohost/plone/Members/test_user_1_/+/addATDocument'
+    'http://nohost/plone/Members/test_user_1_/+/addATFolder'
     >>> portal.Members.contentValues()
-    [<ATDocument at /plone/Members/foo-template-title>,
+    [<ATFolder at /plone/Members/foo-template-title>,
      <ATFolder at /plone/Members/test_user_1_>]
     >>> folder.contentValues()
     []
@@ -187,26 +187,26 @@ without copying or otherwise instantiating new content.
 Successfully saving the form will copy the template and modify it with
 the submitted form data.
 
-    >>> contributor_browser.getControl('Title').value = 'Foo Page Title'
+    >>> contributor_browser.getControl('Title').value = 'Foo Folder Title'
     >>> contributor_browser.getControl('Save').click()
     >>> contributor_browser.url
-    'http://nohost/plone/Members/test_user_1_/foo-page-title'
+    'http://nohost/plone/Members/test_user_1_/foo-folder-title/'
     >>> print contributor_browser.contents
     <...
     ...Changes saved...
-    Foo Page Title...
-    Foo Template Description...
+    ...Foo Folder Title...
+    ...Foo Template Description...
     >>> portal.Members.contentValues()
-    [<ATDocument at /plone/Members/foo-template-title>,
+    [<ATFolder at /plone/Members/foo-template-title>,
      <ATFolder at /plone/Members/test_user_1_>]
     >>> folder.contentValues()
-    [<ATDocument at /plone/Members/test_user_1_/foo-page-title>]
+    [<ATFolder at /plone/Members/test_user_1_/foo-folder-title>]
 
 The content added from the template behaves as other content and is
 editable by the owner.
 
     >>> contributor_browser.getLink('Edit')
-    <Link text='Edit' url='http://nohost/plone/Members/test_user_1_/foo-page-title/edit'>
+    <Link text='Edit' url='http://nohost/plone/Members/test_user_1_/foo-folder-title/edit'>
 
 A user without rights to administer templates may not designate
 content as a template.
@@ -236,42 +236,42 @@ information constructContent call.
 
     >>> self.login()
     >>> folder.invokeFactory(
-    ...     type_name='Document', id='bar-page-title',
-    ...     description='Bar page description')
-    'bar-page-title'
+    ...     type_name='Folder', id='bar-folder-title',
+    ...     description='Bar folder description')
+    'bar-folder-title'
     >>> self.logout()
-    >>> folder['bar-page-title'].Title()
+    >>> folder['bar-folder-title'].Title()
     'Foo Template Title'
-    >>> folder['bar-page-title'].Description()
-    'Bar page description'
+    >>> folder['bar-folder-title'].Description()
+    'Bar folder description'
 
 The template for a given content type may be replaced using the "Make
 template" action on the new template.
 
     >>> portal.Members.deleteReference(
     ...     portal.Members['foo-template-title'],
-    ...     relationship='contemplate.Document')
+    ...     relationship='contemplate.Folder')
     >>> portal.Members.addReference(
-    ...     folder['foo-page-title'],
-    ...     relationship='contemplate.Document')
-    <Reference sid:... tid:... rel:contemplate.Document>
+    ...     folder['foo-folder-title'],
+    ...     relationship='contemplate.Folder')
+    <Reference sid:... tid:... rel:contemplate.Folder>
 
     >>> contributor_browser.open(folder.absolute_url())
-    >>> contributor_browser.getLink(url='/+/addATDocument').click()
+    >>> contributor_browser.getLink(url='/+/addATFolder').click()
     >>> contributor_browser.getControl('Title').value
-    'Foo Page Title'
+    'Foo Folder Title'
 
 The template may also be removed using the "Remove template" action on
 the template based add form.
 
     >>> portal.Members.deleteReference(
-    ...     folder['foo-page-title'],
-    ...     relationship='contemplate.Document')
+    ...     folder['foo-folder-title'],
+    ...     relationship='contemplate.Folder')
 
     >>> contributor_browser.open(folder.absolute_url())
-    >>> contributor_browser.getLink(url='/+/addATDocument').click()
+    >>> contributor_browser.getLink(url='/+/addATFolder').click()
     >>> contributor_browser.url
-    'http://nohost/plone/Members/test_user_1_/portal_factory/Document/document.../edit'
+    'http://nohost/plone/Members/test_user_1_/portal_factory/Folder/folder.../edit'
     >>> contributor_browser.getControl('Title').value
     ''
     >>> contributor_browser.getControl('Description').value
@@ -324,12 +324,12 @@ container, then the type is not allowed to be added.
      <TemplateDynamicViewTypeInfo at /plone/portal_types/Image>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/Link>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/News Item>]
-    >>> portal.portal_types.Document.reserved_id = 'foo-page-title'
+    >>> portal.portal_types.Folder.reserved_id = 'foo-folder-title'
     >>> folder.allowedContentTypes()
-    [<TemplateDynamicViewTypeInfo at /plone/portal_types/Event>,
+    [<TemplateDynamicViewTypeInfo at /plone/portal_types/Document>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Event>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/Favorite>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/File>,
-     <TemplateDynamicViewTypeInfo at /plone/portal_types/Folder>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/Image>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/Link>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/News Item>]
