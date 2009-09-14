@@ -17,7 +17,7 @@
             class="enableUnloadProtection enableAutoFocus atBaseEditForm"
             action=""
             id=""
-            tal:attributes="action string:${form/adding/absolute_url}/${form/name};
+            tal:attributes="action string:${form/form_context/absolute_url}/${form/__name__};
                             id string:${portal_type}-base-edit;
                             class python:path('allow_tabbing|nothing') and 'enableUnloadProtection enableAutoFocus enableFormTabbing enableUnlockProtection' or 'enableUnloadProtection enableAutoFocus enableUnlockProtection';">
         <metal:block define-slot="extra_top" />
@@ -135,6 +135,16 @@
                  name="last_referer"
                  tal:define="last_referer python:here.session_restore_value('HTTP_REFERER', request.form.get('last_referer', request.get('HTTP_REFERER')))"
                  tal:attributes="value python:(last_referer and '%s/%s' % (here.absolute_url(), template.id) not in last_referer) and last_referer or (here.getParentNode() and here.getParentNode().absolute_url())"
+                 />
+
+          <tal:comment replace="nothing">
+            If paths were passed in, as with batch_edit, pass them along
+          </tal:comment>
+          <input type="hidden"
+                 name="paths:list"
+                 tal:condition="request/paths|nothing"
+                 tal:repeat="path request/paths"
+                 tal:attributes="value path"
                  />
 
           <metal:block define-slot="buttons"

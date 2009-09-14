@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<cmfformcontroller>
+  <action
+     object_id="validate_integrity"
+     status="success"
+     button="save.batch"
+     context_type=""
+     action_type="traverse_to"
+     action_arg="nothing"
+     />
+</cmfformcontroller>
+

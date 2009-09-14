@@ -10,7 +10,7 @@
    <property name="url_expr">string:batch_edit:method</property>
    <property name="icon_expr"></property>
    <property
-      name="available_expr">python:True</property>
+      name="available_expr"></property>
    <property name="permissions">
     <element value="View"/>
    </property>

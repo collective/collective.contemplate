@@ -4,7 +4,7 @@ import transaction
 from zope import interface
 from zope import component
 
-import Acquisition
+from Acquisition import aq_inner
 from ZPublisher import Publish
 from ZPublisher import mapply
 from Products.Five.browser import pagetemplatefile
@@ -40,20 +40,22 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
 
     index = pagetemplatefile.ZopeTwoPageTemplateFile('at.pt')
 
+    def mapply(self, obj, **kw):
+        return mapply.mapply(
+            obj, self.request.args, kw,
+            Publish.call_object, 1, Publish.missing_name,
+            Publish.dont_publish_class, self.request, bind=1)
+
     def __call__(self):
         if self.template is None:
             # Fallback to the normal createObject script
-            return mapply.mapply(
-                Acquisition.aq_inner(
-                    self.context.context).restrictedTraverse(
-                    'createObject'),
-                self.request.args, dict(type_name=self.type_name),
-                Publish.call_object, 1, Publish.missing_name,
-                Publish.dont_publish_class, self.request, bind=1)
+            return self.mapply(
+                aq_inner(self.context.context).restrictedTraverse(
+                    'createObject'), type_name=self.type_name)
 
         savepoint = transaction.savepoint(True)
         try:
-            context = Acquisition.aq_inner(self.context)
+            context = aq_inner(self.context)
             # Temporarily Make the current user the owner
             owner.changeOwnershipOf(context)
             # Temporarily mark the creation flag
@@ -84,6 +86,9 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
             # Undo the temporary change of ownership
             savepoint.rollback()
 
+        return self.finish(controller_state, edit_action)
+
+    def finish(self, controller_state, edit_action):
         # The form has been successully submitted, copy the template
         # and pass processing off to the real edit action
         added = self.createAndAdd(data=dict())
@@ -98,16 +103,19 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
         if 'title' in self.request:
             added.setTitle(self.request['title'])
             added._renameAfterCreation()
-            widget = added.getField('id').widget
-            member = added.portal_membership.getAuthenticatedMember()
-            member_visible_ids = member.getProperty(
-                'visible_ids',
-                added.portal_memberdata.getProperty('visible_ids'))
-            widget_visible_ids = getattr(
-                widget, 'ignore_visible_ids', None)
-            if not (widget_visible_ids or member_visible_ids):
-                self.request.form.pop('id', None)
+            self.maybePopId(added)
         return added
+
+    def maybePopId(self, context):
+        widget = context.getField('id').widget
+        member = context.portal_membership.getAuthenticatedMember()
+        member_visible_ids = member.getProperty(
+            'visible_ids',
+            context.portal_memberdata.getProperty('visible_ids'))
+        widget_visible_ids = getattr(
+            widget, 'ignore_visible_ids', None)
+        if not (widget_visible_ids or member_visible_ids):
+            self.request.form.pop('id', None)
         
     def getEdit(self, context):
         # From Products.CMFFormController.Actions.TraverseToAction

@@ -52,8 +52,7 @@ Select multiple items of the same type and click the edit button.
 
 If invalid values are entered, a validation error is displayed.
 
-    >>> browser.getControl('Title').value
-    ''
+    >>> browser.getControl('Title').value = ''
     >>> browser.getControl('Save').click()
     >>> print browser.contents
     <...
@@ -71,7 +70,7 @@ the browser is redirected back to the folder_contents form.
 
     >>> browser.getControl('Save').click()
     >>> browser.url
-    '/plone/Members/test_user_1_/folder_contents'
+    'http://nohost/plone/Members/test_user_1_/folder_contents'
     >>> print browser.contents
     <...
     ...Changes saved...
@@ -91,15 +90,11 @@ the browser is redirected back to the folder_contents form.
 
 An error is raised if items of different types are selected.
 
-    >>> browser.getControl('Batch Document Title').selected = True
+    >>> browser.getControl(
+    ...     'Batch Document Title', index=1).selected = True
     >>> browser.getControl('Qux Event Title').selected = True
     >>> browser.getControl('Batch Edit').click()
     >>> print browser.contents
     <...
     ...Error...
     ...Selected items are not of the same type...
-
-    >>> browser.getControl('Batch Document Title').selected
-    True
-    >>> browser.getControl('Qux Event Title').selected
-    True

@@ -8,8 +8,8 @@ class TemplateAddForm(object):
 
     def __init__(self, *args, **kw):
         super(TemplateAddForm, self).__init__(*args, **kw)
-        self.adding = aq_inner(self.context)
-        self.updateTemplate(aq_inner(self.adding.context))
+        self.form_context = aq_inner(self.context)
+        self.updateTemplate(aq_inner(self.form_context.context))
         
     def updateTemplate(self, context):
         self.template = None
@@ -22,7 +22,7 @@ class TemplateAddForm(object):
 
     def createAndAdd(self, data):
         """Delegate to the type info"""
-        destination = aq_inner(self.adding.context)
+        destination = aq_inner(self.form_context.context)
         if 'id' not in data:
             data['id'] = None
         new_id = destination.invokeFactory(
