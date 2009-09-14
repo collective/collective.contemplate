@@ -1,12 +1,12 @@
 <?xml version="1.0"?>
 <cmfformcontroller>
   <action
-     object_id="validate_integrity"
+     object_id="update_version_on_edit"
      status="success"
      button="save.batch"
      context_type=""
      action_type="traverse_to"
-     action_arg="nothing"
+     action_arg="string:batch_null"
      />
 </cmfformcontroller>
 

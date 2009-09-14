@@ -55,3 +55,6 @@ class BatchEditForm(at.FormControllerTemplateAddForm):
         self.request.response.redirect(
             context.absolute_url()+'/folder_contents')
         return ''
+
+class BatchNullView(object):
+    pass
