@@ -25,7 +25,14 @@ def test_suite():
         test_class=ptc.FunctionalTestCase)
     contemplate_suite.layer = testing.layer
 
-    return unittest.TestSuite([ptc_suite, contemplate_suite])
+    batch_suite = ZopeTestCase.FunctionalDocFileSuite(
+        'batch.txt',
+        optionflags=optionflags,
+        test_class=ptc.FunctionalTestCase)
+    batch_suite.layer = testing.batch_layer
+
+    return unittest.TestSuite([
+        ptc_suite, contemplate_suite, batch_suite])
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

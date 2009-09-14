@@ -1,0 +1,105 @@
+.. -*-doctest-*-
+
+=============
+Batch Editing
+=============
+
+An action is provided which can be used as a button on folder_contents
+forms, including the collection folder_contents form, to edit multiple
+selected items at once is all the items are of the same content type.
+
+Open a browser and log in as a user who can edit the items in a
+folder.
+
+    >>> from Products.Five.testbrowser import Browser
+    >>> from Products.PloneTestCase import ptc
+    >>> browser = Browser()
+    >>> browser.handleErrors = False
+    >>> browser.open(portal.absolute_url())
+    >>> browser.getLink('Log in').click()
+    >>> browser.getControl(
+    ...     'Login Name').value = ptc.default_user
+    >>> browser.getControl(
+    ...     'Password').value = ptc.default_password
+    >>> browser.getControl('Log in').click()
+
+Open the folder_contents form.  Multiple items are listed.
+
+    >>> browser.open(folder.absolute_url())
+    >>> browser.getLink('Contents').click()
+    >>> browser.getControl('Foo Document Title')
+    <ItemControl name='paths:list' type='checkbox'
+    optionValue='/plone/Members/test_user_1_/foo-document-title'
+    selected=False>
+    >>> browser.getControl('Bar Document Title')
+    <ItemControl name='paths:list' type='checkbox'
+    optionValue='/plone/Members/test_user_1_/bar-document-title'
+    selected=False>
+    >>> browser.getControl('Qux Event Title')
+    <ItemControl name='paths:list' type='checkbox'
+    optionValue='/plone/Members/test_user_1_/qux-event-title'
+    selected=False>
+
+Select multiple items of the same type and click the edit button.
+
+    >>> browser.getControl('Foo Document Title').selected = True
+    >>> browser.getControl('Bar Document Title').selected = True
+    >>> browser.getControl('Edit').click()
+    >>> print browser.contents
+    <...
+    ...Edit...
+    ...Document...
+
+If invalid values are entered, a validation error is displayed.
+
+    >>> browser.getControl('Title').value
+    ''
+    >>> browser.getControl('Save').click()
+    >>> print browser.contents
+    <...
+    ...Please correct the indicated errors...
+    ...Title is required...
+
+Change the field values on the batch edit form.
+
+    >>> browser.getControl('Title').value = 'Batch Document Title'
+    >>> browser.getControl(
+    ...     'Description').value = 'Batch Document Description'
+
+When the form is successfully submitted, the changes are applied and
+the browser is redirected back to the folder_contents form.
+
+    >>> browser.getControl('Save').click()
+    >>> browser.url
+    '/plone/Members/test_user_1_/folder_contents'
+    >>> print browser.contents
+    <...
+    ...Changes saved...
+
+    >>> browser.getControl('Batch Document Title', index=0)
+    <ItemControl name='paths:list' type='checkbox'
+    optionValue='/plone/Members/test_user_1_/foo-document-title'
+    selected=False>
+    >>> browser.getControl('Batch Document Title', index=1)
+    <ItemControl name='paths:list' type='checkbox'
+    optionValue='/plone/Members/test_user_1_/bar-document-title'
+    selected=False>
+    >>> browser.getControl('Qux Event Title')
+    <ItemControl name='paths:list' type='checkbox'
+    optionValue='/plone/Members/test_user_1_/qux-event-title'
+    selected=False>
+
+An error is raised if items of different types are selected.
+
+    >>> browser.getControl('Batch Document Title').selected = True
+    >>> browser.getControl('Qux Event Title').selected = True
+    >>> browser.getControl('Edit').click()
+    >>> print browser.contents
+    <...
+    ...Error...
+    ...Selected items are not of the same type...
+
+    >>> browser.getControl('Batch Document Title').selected
+    True
+    >>> browser.getControl('Qux Event Title').selected
+    True
