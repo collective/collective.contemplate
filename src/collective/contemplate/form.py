@@ -1,6 +1,6 @@
 from zope import component
 
-import Acquisition
+from Acquisition import aq_inner
 
 from collective.contemplate import interfaces
 
@@ -8,20 +8,21 @@ class TemplateAddForm(object):
 
     def __init__(self, *args, **kw):
         super(TemplateAddForm, self).__init__(*args, **kw)
-        self.adding = self.context
+        self.adding = aq_inner(self.context)
+        self.updateTemplate(aq_inner(self.adding.context))
+        
+    def updateTemplate(self, context):
         self.template = None
         info = interfaces.ITemplateTypeInfo(
-            self.adding.context.portal_types.getTypeInfo(
-                self.type_name), None)
+            context.portal_types.getTypeInfo(self.type_name), None)
         if info is not None:
-            self.template = info.getTemplate(
-                Acquisition.aq_inner(self.adding.context))
-            if self.template is not None:
-                self.context = self.template
+            self.template = template = info.getTemplate(context)
+            if template is not None:
+                self.context = template
 
     def createAndAdd(self, data):
         """Delegate to the type info"""
-        destination = Acquisition.aq_inner(self.adding.context)
+        destination = aq_inner(self.adding.context)
         if 'id' not in data:
             data['id'] = None
         new_id = destination.invokeFactory(
