@@ -17,4 +17,20 @@
    <property name="visible">True</property>
   </object>
  </object>
+ <object name="folder_topic_buttons" meta_type="CMF Action Category">
+  <object name="edit" meta_type="CMF Action" i18n:domain="plone">
+   <property name="title" i18n:translate="">Batch Edit</property>
+   <property name="description" i18n:translate="">
+     Edit all the selected items at once
+   </property>
+   <property name="url_expr">string:batch_edit:method</property>
+   <property name="icon_expr"></property>
+   <property
+      name="available_expr"></property>
+   <property name="permissions">
+    <element value="View"/>
+   </property>
+   <property name="visible">True</property>
+  </object>
+ </object>
 </object>

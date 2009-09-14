@@ -3,5 +3,6 @@
   <version>0.1</version>
   <dependencies>
     <dependency>profile-collective.contemplate:clear</dependency>
+    <dependency>profile-collective.contemplate:batch</dependency>
   </dependencies>
 </metadata>
