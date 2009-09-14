@@ -44,9 +44,6 @@ class BatchLayer(tcl_ptc.BasePTCLayer):
             self.folder, type_name='Event', id_='qux-event-title',
             title='Qux Event Title',
             description='Qux event description')
-
-        self.folder.addReference(self.folder['foo-document-title'],
-                                 relationship='contemplate.Document')
         self.logout()
 
 batch_layer = BatchLayer([layer])

@@ -6,7 +6,17 @@ Batch Editing
 
 An action is provided which can be used as a button on folder_contents
 forms, including the collection folder_contents form, to edit multiple
-selected items at once is all the items are of the same content type.
+selected items at once is all the items are of the same content type
+and for which there is a template.
+
+Start with a folder containing some content.  Set a template for a
+content type.
+
+    >>> self.login()
+    >>> self.folder.addReference(self.folder['foo-document-title'],
+    ...                          relationship='contemplate.Document')
+    <Reference sid:... tid:... rel:contemplate.Document>
+    >>> self.logout()
 
 Open a browser and log in as a user who can edit the items in a
 folder.
