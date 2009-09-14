@@ -1,0 +1,2 @@
+class BatchEditForm(object):
+    pass

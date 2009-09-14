@@ -36,4 +36,10 @@
      template="macros.pt"
      permission="cmf.ModifyPortalContent" />
 
+  <browser:page
+     name="batch_edit"
+     for="Products.Archetypes.interfaces.IBaseObject"
+     class=".batch.BatchEditForm"
+     permission="zope2.View" />
+
 </configure>

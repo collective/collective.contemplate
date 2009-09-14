@@ -44,7 +44,7 @@ Select multiple items of the same type and click the edit button.
 
     >>> browser.getControl('Foo Document Title').selected = True
     >>> browser.getControl('Bar Document Title').selected = True
-    >>> browser.getControl('Edit').click()
+    >>> browser.getControl('Batch Edit').click()
     >>> print browser.contents
     <...
     ...Edit...
@@ -93,7 +93,7 @@ An error is raised if items of different types are selected.
 
     >>> browser.getControl('Batch Document Title').selected = True
     >>> browser.getControl('Qux Event Title').selected = True
-    >>> browser.getControl('Edit').click()
+    >>> browser.getControl('Batch Edit').click()
     >>> print browser.contents
     <...
     ...Error...
