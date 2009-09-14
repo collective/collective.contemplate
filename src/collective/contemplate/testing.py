@@ -30,6 +30,8 @@ class BatchLayer(tcl_ptc.BasePTCLayer):
         return content
 
     def afterSetUp(self):
+        self.addProfile('collective.contemplate:batch')
+
         self.login()
         self.addContent(
             self.folder,

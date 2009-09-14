@@ -1,0 +1,25 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:browser="http://namespaces.zope.org/browser"
+   xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
+
+  <browser:page
+     name="batch_edit"
+     for="Products.Archetypes.interfaces.IBaseObject"
+     class=".batch.BatchEditForm"
+     permission="zope2.View" />
+
+  <browser:page
+     name="batch_null"
+     for="Products.Archetypes.interfaces.IBaseObject"
+     class=".batch.BatchNullView"
+     permission="zope2.View" />
+
+  <genericsetup:registerProfile
+     name="batch"
+     title="Batch Editing"
+     description="Install support for folder_contents batch editing."
+     provides="Products.GenericSetup.interfaces.EXTENSION"
+     />
+
+</configure>

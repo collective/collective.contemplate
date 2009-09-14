@@ -3,6 +3,7 @@
    i18n_domain="collective.contemplate">
 
   <include file="base.zcml" />
+  <include file="batch.zcml" />
   <include file="atct.zcml" />
 
 </configure>
