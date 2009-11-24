@@ -1,0 +1,14 @@
+<configure
+   xmlns="http://namespaces.zope.org/zope"
+   xmlns:genericsetup="http://namespaces.zope.org/genericsetup">
+
+  <genericsetup:importStep
+      name="portal_form_controller"
+      title="FormController Tool"
+      description="Install CMFFormController actions and validators"
+      handler="Products.CMFFormController.exportimport.importCMFFormController"
+      >
+    <genericsetup:depends name="toolset" />
+  </genericsetup:importStep>
+
+</configure>
