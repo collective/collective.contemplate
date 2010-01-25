@@ -39,6 +39,11 @@ class TemplateTypeInfo(object):
             added = container[id]
         else:
             added = container[result['new_id']]
+
+        # Clear the copy flag or the reference catalogs might not be
+        # updated on reindexObject()
+        if hasattr(added, '_v_is_cp'):
+            del added._v_is_cp
             
         owner.changeOwnershipOf(added)
         if args or kw:
