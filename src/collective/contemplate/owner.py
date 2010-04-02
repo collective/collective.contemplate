@@ -1,7 +1,13 @@
-def changeOwnershipOf(object):
-    membership = object.portal_membership
-    acl_users = object.acl_users
-    userid = membership.getAuthenticatedMember().getId()
+from Products.CMFCore.utils import getToolByName
+
+
+def changeOwnershipOf(object, userid=None):
+    membership = getToolByName(object, 'portal_membership')
+
+    if userid is None:
+        userid = membership.getAuthenticatedMember().getId()
+
+    acl_users = getToolByName(object, 'acl_users')
     user = acl_users.getUserById(userid)
     if user is None:
         # The user could be in the top level acl_users folder in
@@ -17,11 +23,12 @@ def changeOwnershipOf(object):
 
     _path = object.portal_url.getRelativeContentURL(object)
     for brain in object.portal_catalog.unrestrictedSearchResults(
-        path={'query':_path,'level':1}):
+        path={'query': _path, 'level': 1}):
         obj = brain.getObject()
         fixOwnerRole(obj, userid)
         obj.reindexObject(
-            object._cmf_security_indexes+('Creator',))
+            object._cmf_security_indexes + ('Creator',))
+
 
 def fixOwnerRole(object, user_id):
     # Get rid of all other owners
