@@ -5,10 +5,11 @@ import Acquisition
 from AccessControl import SecurityManagement
 
 from Products.PluggableAuthService.interfaces import events
-from Products.PlonePAS import utils 
+from Products.PlonePAS import utils
 
 from collective.contemplate import interfaces
 from collective.contemplate import owner
+
 
 @component.adapter(events.IUserLoggedInEvent)
 def createMemberArea(logged_in):
@@ -20,9 +21,10 @@ def createMemberArea(logged_in):
     if container.hasObject(safe_member_id):
         return
     createObjectAsPortalOwner(
-        container, 
+        container,
         type_name=container.portal_membership.memberarea_type,
         id_=safe_member_id)
+
 
 def createObjectAsPortalOwner(container, type_name, id_):
     """Create an object as the portal owner"""
@@ -34,7 +36,7 @@ def createObjectAsPortalOwner(container, type_name, id_):
     if template is None:
         return
     source = Acquisition.aq_parent(Acquisition.aq_inner(template))
-        
+
     sm = SecurityManagement.getSecurityManager()
     SecurityManagement.newSecurityManager(
         None,

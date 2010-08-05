@@ -10,6 +10,7 @@ from Products.CMFCore import TypesTool
 from collective.contemplate import interfaces
 from collective.contemplate import owner
 
+
 class TemplateTypeInfo(object):
     """Template Type Information"""
     interface.implements(interfaces.ITemplateTypeInfo)
@@ -17,10 +18,10 @@ class TemplateTypeInfo(object):
     meta_type = 'TemplateTypeInfo'
 
     _properties = (
-        {'id':'reserved_id', 'type': 'string', 'mode':'w',
-         'label':'Reserved ID'},
-        {'id':'global_uid', 'type': 'string', 'mode':'w',
-         'label':'Global Template UID'},)
+        {'id': 'reserved_id', 'type': 'string', 'mode': 'w',
+         'label': 'Reserved ID'},
+        {'id': 'global_uid', 'type': 'string', 'mode': 'w',
+         'label': 'Global Template UID'},)
 
     reserved_id = None
 
@@ -44,14 +45,14 @@ class TemplateTypeInfo(object):
         # updated on reindexObject()
         if hasattr(added, '_v_is_cp'):
             del added._v_is_cp
-            
+
         owner.changeOwnershipOf(added)
         if args or kw:
             added.edit(*args, **kw)
         event.notify(
             interfaces.TemplateCopiedEvent(added, template))
         return added
-    
+
     def getTemplate(self, container):
         site = container.portal_url.getPortalObject()
         parent = container
@@ -68,7 +69,7 @@ class TemplateTypeInfo(object):
             if Acquisition.aq_base(parent) is site:
                 return
             parent = Acquisition.aq_parent(parent)
-        return interfaces.ITemplate(self, None)        
+        return interfaces.ITemplate(self, None)
 
     def isConstructionAllowed(self, container):
         """Not allowed if reserved id is already occupied"""
@@ -76,6 +77,7 @@ class TemplateTypeInfo(object):
             return False
         return super(
             TemplateTypeInfo, self).isConstructionAllowed(container)
+
 
 class TemplateTypeInformation(TemplateTypeInfo,
                               TypesTool.TypeInformation):
@@ -87,6 +89,7 @@ class TemplateTypeInformation(TemplateTypeInfo,
 
 Globals.InitializeClass(TemplateTypeInformation)
 
+
 class TemplateFactoryTypeInfo(TemplateTypeInfo,
                               TypesTool.FactoryTypeInformation):
     """Template Factory Type Information"""
@@ -96,6 +99,7 @@ class TemplateFactoryTypeInfo(TemplateTypeInfo,
                    TemplateTypeInfo._properties)
 
 Globals.InitializeClass(TemplateFactoryTypeInfo)
+
 
 class TemplateScriptableTypeInfo(TemplateTypeInfo,
                                  TypesTool.ScriptableTypeInformation):
