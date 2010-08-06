@@ -8,9 +8,10 @@ from collective.testcaselayer import ptc as tcl_ptc
 
 from collective.contemplate import testing
 
-optionflags = (doctest.NORMALIZE_WHITESPACE|
-               doctest.ELLIPSIS|
+optionflags = (doctest.NORMALIZE_WHITESPACE |
+               doctest.ELLIPSIS |
                doctest.REPORT_NDIFF)
+
 
 def test_suite():
     ptc_suite = ZopeTestCase.FunctionalDocFileSuite(
