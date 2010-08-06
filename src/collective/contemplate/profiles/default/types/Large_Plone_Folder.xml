@@ -9,6 +9,7 @@
  <property name="content_meta_type">ATBTreeFolder</property>
  <property name="product">ATContentTypes</property>
  <property name="factory">addATBTreeFolder</property>
+ <property name="add_view_expr">string:${folder_url}/+/addATBTreeFolder</property>
  <property name="immediate_view">folder_listing</property>
  <property name="global_allow">False</property>
  <property name="filter_content_types">False</property>

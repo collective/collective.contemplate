@@ -9,6 +9,7 @@
  <property name="content_meta_type">ATFavorite</property>
  <property name="product">ATContentTypes</property>
  <property name="factory">addATFavorite</property>
+ <property name="add_view_expr">string:${folder_url}/+/addATFavorite</property>
  <property name="immediate_view">favorite_view</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>

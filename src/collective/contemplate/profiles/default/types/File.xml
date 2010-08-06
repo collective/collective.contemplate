@@ -9,6 +9,7 @@
  <property name="content_meta_type">ATFile</property>
  <property name="product">ATContentTypes</property>
  <property name="factory">addATFile</property>
+ <property name="add_view_expr">string:${folder_url}/+/addATFile</property>
  <property name="immediate_view">file_view</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>

@@ -9,6 +9,7 @@
  <property name="content_meta_type">ATNewsItem</property>
  <property name="product">ATContentTypes</property>
  <property name="factory">addATNewsItem</property>
+ <property name="add_view_expr">string:${folder_url}/+/addATNewsItem</property>
  <property name="immediate_view">newsitem_view</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>

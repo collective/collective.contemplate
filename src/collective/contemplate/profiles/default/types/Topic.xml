@@ -9,6 +9,7 @@
  <property name="content_meta_type">ATTopic</property>
  <property name="product">ATContentTypes</property>
  <property name="factory">addATTopic</property>
+ <property name="add_view_expr">string:${folder_url}/+/addATTopic</property>
  <property name="immediate_view">atct_topic_view</property>
  <property name="global_allow">True</property>
  <property name="filter_content_types">True</property>
