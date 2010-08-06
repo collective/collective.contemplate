@@ -3,14 +3,16 @@ from collective.testcaselayer import common
 
 from collective import contemplate
 
+
 class Layer(tcl_ptc.BasePTCLayer):
     """Install collective.contemplate"""
 
     def afterSetUp(self):
-        self.loadZCML('configure.zcml', package=contemplate)
+        self.loadZCML('testing.zcml', package=contemplate)
         self.addProfile('collective.contemplate:default')
 
 layer = Layer([common.common_layer])
+
 
 class BatchLayer(tcl_ptc.BasePTCLayer):
     """Add some content for batch editing"""
