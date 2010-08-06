@@ -5,6 +5,7 @@ from zope import event
 import Globals
 import Acquisition
 
+from Products.CMFCore.utils import getToolByName
 from Products.CMFCore import TypesTool
 
 from collective.contemplate import interfaces
@@ -54,7 +55,7 @@ class TemplateTypeInfo(object):
         return added
 
     def getTemplate(self, container):
-        site = container.portal_url.getPortalObject()
+        site = getToolByName(container, 'portal_url').getPortalObject()
         parent = container
         container_base = Acquisition.aq_base(container)
         while parent is not None:

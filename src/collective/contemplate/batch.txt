@@ -73,7 +73,7 @@ Change the field values on the batch edit form.
 
     >>> browser.getControl('Title').value = 'Batch Document Title'
     >>> browser.getControl(
-    ...     'Description').value = 'Batch Document Description'
+    ...     name='description').value = 'Batch Document Description'
 
 When the form is successfully submitted, the changes are applied and
 the browser is redirected back to the folder_contents form.

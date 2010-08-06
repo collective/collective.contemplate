@@ -37,7 +37,7 @@ The member can create a folder.
     >>> browser.getControl(
     ...     'Title').value = 'Foo Folder Title'
     >>> browser.getControl(
-    ...     'Description').value = 'Foo Folder Description'
+    ...     name='description').value = 'Foo Folder Description'
     >>> browser.getControl('Save').click()
     >>> print browser.contents
     <...
@@ -55,7 +55,7 @@ The member can create a page.
     >>> browser.getControl(
     ...     'Title').value = 'Foo Page Title'
     >>> browser.getControl(
-    ...     'Description').value = 'Foo Page Description'
+    ...     name='description').value = 'Foo Page Description'
     >>> browser.getControl('Save').click()
     >>> print browser.contents
     <...
