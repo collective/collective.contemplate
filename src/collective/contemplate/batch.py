@@ -23,8 +23,6 @@ class BatchEditForm(at.FormControllerTemplateAddForm):
                 self.status = (
                     'Selected items are not of the same type')
         self.type_name = type_name
-            
-        self.updateTemplate(context)
 
     def __call__(self):
         if self.error:
@@ -36,6 +34,9 @@ class BatchEditForm(at.FormControllerTemplateAddForm):
                 context.absolute_url()+'/folder_contents')
             return ''
         return super(BatchEditForm, self).__call__()
+
+    def update(self, *args, **kw):
+        self.updateTemplate(aq_inner(self.form_context))
 
     def finish(self, controller_state, edit_action):
         context = aq_inner(self.form_context)

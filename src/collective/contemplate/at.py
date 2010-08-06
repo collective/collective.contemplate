@@ -47,6 +47,7 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
             Publish.dont_publish_class, self.request, bind=1)
 
     def __call__(self):
+        self.update()
         if self.template is None:
             # Fallback to the normal createObject script
             return self.mapply(
