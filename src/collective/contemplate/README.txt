@@ -318,20 +318,19 @@ portal_types.  If set and an object with that ID already exists in the
 container, then the type is not allowed to be added.
 
     >>> self.login()
-    >>> folder.allowedContentTypes()
+    >>> from pprint import pprint
+    >>> pprint(folder.allowedContentTypes())
     [<TemplateDynamicViewTypeInfo at /plone/portal_types/Document>,
-     <TemplateDynamicViewTypeInfo at /plone/portal_types/Event>,
-     <TemplateDynamicViewTypeInfo at /plone/portal_types/Favorite>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Event>,...
      <TemplateDynamicViewTypeInfo at /plone/portal_types/File>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/Folder>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/Image>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/Link>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/News Item>]
     >>> portal.portal_types.Folder.reserved_id = 'foo-folder-title'
-    >>> folder.allowedContentTypes()
+    >>> pprint(folder.allowedContentTypes())
     [<TemplateDynamicViewTypeInfo at /plone/portal_types/Document>,
-     <TemplateDynamicViewTypeInfo at /plone/portal_types/Event>,
-     <TemplateDynamicViewTypeInfo at /plone/portal_types/Favorite>,
+     <TemplateDynamicViewTypeInfo at /plone/portal_types/Event>,...
      <TemplateDynamicViewTypeInfo at /plone/portal_types/File>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/Image>,
      <TemplateDynamicViewTypeInfo at /plone/portal_types/Link>,
