@@ -80,11 +80,6 @@
      for="zope.app.container.interfaces.IAdding"
      permission="atct.AddImage" />
   <contemplate:formControllerPage
-     name="addATBTreeFolder"
-     type_name="Large Plone Folder"
-     for="zope.app.container.interfaces.IAdding"
-     permission="atct.AddLargePloneFolder" />
-  <contemplate:formControllerPage
      name="addATLink"
      type_name="Link"
      for="zope.app.container.interfaces.IAdding"

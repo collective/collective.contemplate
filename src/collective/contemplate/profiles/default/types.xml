@@ -8,8 +8,6 @@
  <object name="File" meta_type="TemplateDynamicViewTypeInfo"/>
  <object name="Folder" meta_type="TemplateDynamicViewTypeInfo"/>
  <object name="Image" meta_type="TemplateDynamicViewTypeInfo"/>
- <object name="Large Plone Folder"
-    meta_type="TemplateDynamicViewTypeInfo"/>
  <object name="Link" meta_type="TemplateDynamicViewTypeInfo"/>
  <object name="News Item" meta_type="TemplateDynamicViewTypeInfo"/>
  <object name="Topic" meta_type="TemplateDynamicViewTypeInfo"/>
