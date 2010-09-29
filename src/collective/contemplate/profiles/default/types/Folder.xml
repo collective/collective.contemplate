@@ -4,8 +4,8 @@
    i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title" i18n:translate="">Folder</property>
  <property name="description"
-     i18n:translate="">A folder which can contain other items.</property>
- <property name="content_icon">folder_icon.gif</property>
+     i18n:translate=""></property>
+ <property name="icon_expr"></property>
  <property name="content_meta_type">ATFolder</property>
  <property name="product">ATContentTypes</property>
  <property name="factory">addATFolder</property>
@@ -18,6 +18,7 @@
  <property name="default_view">folder_listing</property>
  <property name="view_methods">
   <element value="folder_summary_view"/>
+  <element value="folder_full_view"/>
   <element value="folder_tabular_view"/>
   <element value="atct_album_view"/>
   <element value="folder_listing"/>
@@ -36,13 +37,6 @@
     url_expr="string:${object_url}/edit" visible="True"
     i18n:attributes="title">
   <permission value="Modify portal content"/>
- </action>
- <action title="References" action_id="references" category="object"
-    condition_expr="object/archetype_tool/has_graphviz"
-    url_expr="string:${object_url}/reference_graph" visible="True"
-    i18n:attributes="title">
-  <permission value="Modify portal content"/>
-  <permission value="Review portal content"/>
  </action>
  <action title="Folder Listing" action_id="folderlisting" category="folder"
     condition_expr="object/isPrincipiaFolderish"

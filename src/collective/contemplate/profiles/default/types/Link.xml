@@ -4,8 +4,8 @@
    i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title" i18n:translate="">Link</property>
  <property name="description"
-      i18n:translate="">A link to an internal or external resource.</property>
- <property name="content_icon">link_icon.gif</property>
+      i18n:translate="">Links to an internal or external resource.</property>
+ <property name="icon_expr"></property>
  <property name="content_meta_type">ATLink</property>
  <property name="product">ATContentTypes</property>
  <property name="factory">addATLink</property>
@@ -33,13 +33,6 @@
     url_expr="string:${object_url}/edit" visible="True"
     i18n:attributes="title">
   <permission value="Modify portal content"/>
- </action>
- <action title="References" action_id="references" category="object"
-    condition_expr="object/archetype_tool/has_graphviz"
-    url_expr="string:${object_url}/reference_graph" visible="True"
-    i18n:attributes="title">
-  <permission value="Modify portal content"/>
-  <permission value="Review portal content"/>
  </action>
  <action title="External Edit" action_id="external_edit" category="object"
     condition_expr="object/externalEditorEnabled"

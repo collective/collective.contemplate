@@ -4,11 +4,11 @@
    i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title" i18n:translate="">Image</property>
  <property name="description"
-      i18n:translate="">An image, which can be referenced in documents or displayed in an album.</property>
- <property name="content_icon">image_icon.gif</property>
- <property name="content_meta_type">ATImage</property>
- <property name="product">ATContentTypes</property>
- <property name="factory">addATImage</property>
+      i18n:translate="">Images can be referenced in pages or displayed in an album.</property>
+ <property name="icon_expr"></property>
+ <property name="content_meta_type">ATBlob</property>
+ <property name="product">plone.app.blob</property>
+ <property name="factory">addATBlobImage</property>
  <property name="add_view_expr">string:${folder_url}/+/addATImage</property>
  <property name="immediate_view">image_view</property>
  <property name="global_allow">True</property>
@@ -33,13 +33,6 @@
     url_expr="string:${object_url}/edit" visible="True"
     i18n:attributes="title">
   <permission value="Modify portal content"/>
- </action>
- <action title="References" action_id="references" category="object"
-    condition_expr="object/archetype_tool/has_graphviz"
-    url_expr="string:${object_url}/reference_graph" visible="True"
-    i18n:attributes="title">
-  <permission value="Modify portal content"/>
-  <permission value="Review portal content"/>
  </action>
  <action title="Transform" action_id="transform" category="object"
     condition_expr="object/hasPIL"

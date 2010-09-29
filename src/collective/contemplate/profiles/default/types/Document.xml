@@ -4,8 +4,8 @@
    i18n:domain="plone" xmlns:i18n="http://xml.zope.org/namespaces/i18n">
  <property name="title" i18n:translate="">Page</property>
  <property name="description"
-      i18n:translate="">A page in the site. Can contain rich text.</property>
- <property name="content_icon">document_icon.gif</property>
+      i18n:translate=""></property>
+ <property name="icon_expr"></property>
  <property name="content_meta_type">ATDocument</property>
  <property name="product">ATContentTypes</property>
  <property name="factory">addATDocument</property>
@@ -31,13 +31,6 @@
  <action title="Edit" action_id="edit" category="object" condition_expr="not:object/@@plone_lock_info/is_locked_for_current_user|python:True"
     url_expr="string:${object_url}/edit" visible="True" i18n:attributes="title">
   <permission value="Modify portal content"/>
- </action>
- <action title="References" action_id="references" category="object"
-    condition_expr="object/archetype_tool/has_graphviz"
-    url_expr="string:${object_url}/reference_graph" visible="True"
-    i18n:attributes="title">
-  <permission value="Modify portal content"/>
-  <permission value="Review portal content"/>
  </action>
  <action title="History" action_id="history" category="object"
     condition_expr="" url_expr="string:${object_url}/atct_history"
