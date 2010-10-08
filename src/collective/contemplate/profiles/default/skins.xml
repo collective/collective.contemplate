@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<object name="portal_skins"
+        meta_type="Plone Skins Tool">
+
+ <object name="contemplate"
+         meta_type="Filesystem Directory View"
+         directory="collective.contemplate:skins/contemplate"/>
+
+ <skin-path name="*">
+   <layer name="contemplate"
+          insert-after="custom"/>
+ </skin-path>
+
+</object>

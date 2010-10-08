@@ -1,7 +1,10 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
    xmlns:browser="http://namespaces.zope.org/browser"
+   xmlns:cmf="http://namespaces.zope.org/cmf"
    xmlns:five="http://namespaces.zope.org/five">
+
+  <cmf:registerDirectory name="contemplate"/>
 
   <five:registerClass
      class=".typeinfo.TemplateFactoryTypeInfo"
@@ -29,11 +32,5 @@
 
   <adapter factory=".at.getTemplateFromContainer" />
   <adapter factory=".at.getTemplateFromTypeInfo" />
-
-  <browser:page
-     name="contemplate_macros"
-     for="Products.Archetypes.interfaces.IBaseObject"
-     template="macros.pt"
-     permission="cmf.ModifyPortalContent" />
 
 </configure>

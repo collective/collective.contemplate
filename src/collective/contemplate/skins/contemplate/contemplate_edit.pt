@@ -1,5 +1,7 @@
+<metal:master define-macro="master">
 <tal:body
    define="body_macro context/contemplate_macros/macros/body;
-           form nocall:view;">
+           form nocall:request/PUBLISHED;">
   <metal:master use-macro="context/base_edit/macros/master" />
 </tal:body>
+</metal:master>
