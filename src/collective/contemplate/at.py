@@ -38,7 +38,7 @@ def getTemplateFromTypeInfo(type_info):
 
 class FormControllerTemplateAddForm(form.TemplateAddForm):
 
-    index = pagetemplatefile.ZopeTwoPageTemplateFile('at.pt')
+    index = pagetemplatefile.ViewPageTemplateFile('at.pt')
 
     def mapply(self, obj, **kw):
         return mapply.mapply(
