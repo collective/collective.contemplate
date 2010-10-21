@@ -1,8 +1,10 @@
 <configure
    xmlns="http://namespaces.zope.org/zope"
+   xmlns:zcml="http://namespaces.zope.org/zcml"
    i18n_domain="collective.contemplate">
 
   <include file="meta.zcml" />
+  <include zcml:condition="installed cmf.pt" package="cmf.pt" />
   <include file="configure.zcml" />
   <includeOverrides file="overrides.zcml" />
 
