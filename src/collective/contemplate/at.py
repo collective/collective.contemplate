@@ -38,10 +38,7 @@ def getTemplateFromTypeInfo(type_info):
 
 class FormControllerTemplateAddForm(form.TemplateAddForm):
 
-    @property
-    def index(self):
-        context = aq_inner(self.context)
-        return context.restrictedTraverse('contemplate_edit')
+    index = pagetemplatefile.ViewPageTemplateFile('at.pt')
 
     def mapply(self, obj, **kw):
         return mapply.mapply(
