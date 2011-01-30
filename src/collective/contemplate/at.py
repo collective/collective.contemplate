@@ -104,6 +104,7 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
         'copy_of' ids"""
         added = super(FormControllerTemplateAddForm,
                       self).createAndAdd(data)
+        added.markCreationFlag()
         if 'title' in self.request:
             added.setTitle(self.request['title'])
             added._renameAfterCreation()
