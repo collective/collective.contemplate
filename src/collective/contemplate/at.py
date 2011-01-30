@@ -15,6 +15,7 @@ from collective.contemplate import interfaces
 from collective.contemplate import form
 from collective.contemplate import owner
 
+
 @interface.implementer(interfaces.ITemplate)
 @component.adapter(
     at_ifaces.IReferenceable, interfaces.ITemplateTypeInfo)
@@ -29,12 +30,14 @@ def getTemplateFromContainer(container, type_info):
             type_info.getId(), refs))
     return refs[0]
 
+
 @interface.implementer(interfaces.ITemplate)
 @component.adapter(interfaces.ITemplateTypeInfo)
 def getTemplateFromTypeInfo(type_info):
     uid = type_info.getProperty('global_uid')
     if uid:
         return type_info.reference_catalog.lookupObject(uid)
+
 
 class FormControllerTemplateAddForm(form.TemplateAddForm):
 
@@ -117,7 +120,7 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
             widget, 'ignore_visible_ids', None)
         if not (widget_visible_ids or member_visible_ids):
             self.request.form.pop('id', None)
-        
+
     def getEdit(self, context):
         # From Products.CMFFormController.Actions.TraverseToAction
         action = 'edit'
@@ -130,9 +133,9 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
         try:
             # Test to see if the action is defined in the FTI as an
             # object or folder action
-            action_ob = fti.getActionObject('object/'+action)
+            action_ob = fti.getActionObject('object/' + action)
             if action_ob is None:
-                action_ob = fti.getActionObject('folder/'+action)
+                action_ob = fti.getActionObject('folder/' + action)
             # Use portal actions here so we have a full expression
             # context
             ec = actions_tool._getExprContext(context)
@@ -141,7 +144,7 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
         except (ValueError, AttributeError):
             actions = actions_tool.listFilteredActionsFor(context)
             # flatten the actions as we don't care where they are
-            actions = reduce(lambda x,y,a=actions:  x+a[y],
+            actions = reduce(lambda x, y, a=actions: x + a[y],
                              actions.keys(), [])
             for actiondict in actions:
                 if actiondict['id'] == action:
@@ -160,8 +163,8 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
             else:
                 action_url = url_parts[2]
         else:
-            raise ValueError, 'No %s action found for %s' % (
-                action, context.getId())
+            raise ValueError('No %s action found for %s' % (
+                action, context.getId()))
 
         # If we have CMF 1.5, the actual action_url may be hidden
         # behind a method alias. Attempt to resolve this
@@ -175,7 +178,7 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
                 current_path = '/'.join(context.getPhysicalPath())
                 if possible_alias.startswith(current_path):
                     possible_alias = possible_alias[
-                        len(current_path)+1:]
+                        len(current_path) + 1:]
                 if possible_alias:
                     action_url = fti.queryMethodID(possible_alias,
                                                    default=action_url,
