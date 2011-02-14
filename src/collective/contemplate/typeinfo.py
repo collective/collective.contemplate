@@ -10,6 +10,7 @@ from Products.CMFCore import TypesTool
 
 from collective.contemplate import interfaces
 from collective.contemplate import owner
+from collective.contemplate import ofs
 
 
 class TemplateTypeInfo(object):
@@ -28,19 +29,12 @@ class TemplateTypeInfo(object):
 
     def _constructInstance(self, container, id=None, *args, **kw):
         """Copy a template if available"""
-        template = self.getTemplate(container)
+        template = Acquisition.aq_inner(self.getTemplate(container))
         if template is None:
             return super(
                 TemplateTypeInfo, self)._constructInstance(
                 container, id, *args, **kw)
-        source = Acquisition.aq_parent(Acquisition.aq_inner(template))
-        result, = container.manage_pasteObjects(
-            source.manage_copyObjects([template.getId()]))
-        if id:
-            container.manage_renameObject(result['new_id'], id)
-            added = container[id]
-        else:
-            added = container[result['new_id']]
+        added = ofs.copyObject(template, container, newName=id)
 
         # Clear the copy flag or the reference catalogs might not be
         # updated on reindexObject()
