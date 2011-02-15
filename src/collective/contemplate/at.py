@@ -4,12 +4,17 @@ import transaction
 from zope import interface
 from zope import component
 
+from plone.i18n.normalizer.interfaces import IUserPreferredURLNormalizer
+from plone.i18n.normalizer.interfaces import IURLNormalizer
+
 from Acquisition import aq_inner
 from ZPublisher import Publish
 from ZPublisher import mapply
 from Products.Five.browser import pagetemplatefile
 
 from Products.Archetypes import interfaces as at_ifaces
+from Products.Archetypes.config import RENAME_AFTER_CREATION_ATTEMPTS
+from Products.Archetypes import BaseObject
 
 from collective.contemplate import interfaces
 from collective.contemplate import form
@@ -102,13 +107,21 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
     def createAndAdd(self, data):
         """Rename the object if the id widget is not visible to avoid
         'copy_of' ids"""
+        context = aq_inner(self.context)
+        pop_id = self.maybePopId(context)
+        if pop_id and context._at_rename_after_creation:
+            template = aq_inner(self.template)
+            field = template.getField('title')
+            title, ignored = field.widget.process_form(
+                template, field, self.request.form,
+                empty_marker=BaseObject._marker,
+                validating=False)
+            if title is None or title is BaseObject._marker:
+                title = template.Title()
+            data['id'] = self.generateNewId(dict(title=title))
         added = super(FormControllerTemplateAddForm,
                       self).createAndAdd(data)
         added.markCreationFlag()
-        if 'title' in self.request:
-            added.setTitle(self.request['title'])
-            added._renameAfterCreation()
-            self.maybePopId(added)
         return added
 
     def maybePopId(self, context):
@@ -121,6 +134,70 @@ class FormControllerTemplateAddForm(form.TemplateAddForm):
             widget, 'ignore_visible_ids', None)
         if not (widget_visible_ids or member_visible_ids):
             self.request.form.pop('id', None)
+            return True
+
+    def generateNewId(self, data):
+        """Suggest an id for this object.
+        This id is used when automatically renaming an object after creation.
+        """
+        context = aq_inner(self.context)
+
+        title = data['title']
+
+        if not isinstance(title, unicode):
+            charset = context.getCharset()
+            title = unicode(title, charset)
+
+        if self.request is None:
+            new_id = component.queryUtility(IURLNormalizer).normalize(title)
+        else:
+            new_id = IUserPreferredURLNormalizer(self.request).normalize(title)
+
+        if new_id is None:
+            return False
+
+        invalid_id = True
+        check_id = getattr(context, 'check_id', None)
+        if check_id is not None:
+            invalid_id = check_id(new_id, required=1, contained_by=context)
+
+        # If check_id told us no, or if it was not found, make sure we have an
+        # id unique in the parent folder.
+        if invalid_id:
+            unique_id = self._findUniqueId(new_id)
+            if unique_id is not None:
+                if check_id is None or check_id(new_id, required=1,
+                                                contained_by=context):
+                    new_id = unique_id
+                    invalid_id = False
+
+        return new_id
+
+    def _findUniqueId(self, id):
+        """Find a unique id in the parent folder, based on the given id, by
+        appending -n, where n is a number between 1 and the constant
+        RENAME_AFTER_CREATION_ATTEMPTS, set in config.py. If no id can be
+        found, return None.
+        """
+        parent = aq_inner(self.context)
+
+        check_id = getattr(parent, 'check_id', None)
+        if check_id is None:
+            parent_ids = parent.objectIds()
+            check_id = lambda id, required: id in parent_ids
+
+        invalid_id = check_id(id, required=1, contained_by=parent)
+        if not invalid_id:
+            return id
+
+        idx = 1
+        while idx <= RENAME_AFTER_CREATION_ATTEMPTS:
+            new_id = "%s-%d" % (id, idx)
+            if not check_id(new_id, required=1):
+                return new_id
+            idx += 1
+
+        return None
 
     def getEdit(self, context):
         # From Products.CMFFormController.Actions.TraverseToAction
