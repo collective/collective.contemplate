@@ -4,7 +4,6 @@
    i18n_domain="collective.contemplate">
 
   <include file="meta.zcml" />
-  <include zcml:condition="installed cmf.pt" package="cmf.pt" />
   <include file="configure.zcml" />
   <includeOverrides file="overrides.zcml" />
 
