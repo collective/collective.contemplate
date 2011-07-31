@@ -10,7 +10,6 @@ from plone.i18n.normalizer.interfaces import IURLNormalizer
 from Acquisition import aq_inner
 from ZPublisher import Publish
 from ZPublisher import mapply
-from Products.Five.browser import pagetemplatefile
 
 from Products.Archetypes import interfaces as at_ifaces
 from Products.Archetypes.config import RENAME_AFTER_CREATION_ATTEMPTS
